@@ -28,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
         textTotal = findViewById(R.id.textTotal);
         seekGorjeta = findViewById(R.id.seekBarGorjeta);
 
-        double editGorjetaInt = Double.parseDouble(editGorjeta.getText().toString());
-
         //controlar seekbar
         seekGorjeta.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 porcentagem = seekBar.getProgress();
-                textPorcentagem.setText(porcentagem + "%");
+                textPorcentagem.setText(Math.round(porcentagem) + "%");
+                calcular();
             }
 
             @Override
@@ -48,10 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        double totalPorcentagem = (porcentagem / 100) * editGorjetaInt;
-        String totalPorcentagemSt = String.valueOf(totalPorcentagem);
+    public void calcular(){
 
-        textGorjeta.setText(totalPorcentagemSt);
+        //recuperar valor digitar
+        double valorDigitado = Double.parseDouble(editGorjeta.getText().toString());
+
+        //calcula a gorjeta total
+        double gorjeta = valorDigitado * (porcentagem / 100);
+        double total = gorjeta + valorDigitado;
+
+        //exibe a gorjeta total
+        textGorjeta.setText("R$" + Math.round(gorjeta));
+        textTotal.setText("R$" + total);
     }
 }
